@@ -1,0 +1,87 @@
+/* background */
+
+body{
+  /* Nền tím thẫm chủ đạo */
+  background-color: #190A38;
+
+  /* Tạo mảng màu loang theo artwork album */
+  background-image: 
+    radial-gradient(at 20% 20%, #12E2A3 0px, transparent 50%), /* Xanh lục neon phát sáng góc trên trái */
+    radial-gradient(at 80% 15%, #E65C40 0px, transparent 50%), /* Cam đỏ hoàng hôn góc trên phải */
+    radial-gradient(at 50% 50%, #C82372 0px, transparent 60%), /* Hồng magenta rực rỡ ở giữa */
+    radial-gradient(at 15% 85%, #0F3C85 0px, transparent 50%), /* Xanh lam đậm ở góc dưới trái */
+    radial-gradient(at 85% 85%, #6B21A8 0px, transparent 55%), /* Tím neon góc dưới phải */
+    radial-gradient(at 50% 100%, #190A38 0px, transparent 70%); /* Đáy tím đen tạo độ sâu */
+
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+/* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Custom Range Input Styling */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+      height: 6px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgb(255, 255, 255);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+      transition: transform 0.1s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.25);
+    }
+
+    /* Glassmorphism background effect */
+    .glass-card {
+      background: rgba(20, 24, 38, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Active lyric animation */
+    .lyric-line {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      user-select: none;
+      border-radius: 8px;
+      padding: 4px 12px;
+    }
+    .lyric-line:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+    }
+    .lyric-line.active {
+      color: #6B21A8;
+      font-weight: 700;
+      font-size: 1rem;
+      text-shadow: 0 0 14px rgba(56, 189, 248, 0.5);
+      background: #12E2A3;
+      transform: scale(1.03);
+    }
