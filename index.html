@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ngọt - 2016</title>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="./assets/style.css">
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./favicon.jpg" type="image/x-icon">
+  <!-- Fetchpriority -->
+  <script src=a.js async fetchpriority=high></script>
+  <link rel=preload href=b.js as=script fetchpriority=high>
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-3 sm:p-6 font-sans">
+
+  <!-- Thẻ audio dùng để phát nhạc -->
+  <audio id="audioPlayer"></audio>
+
+  <!-- MAIN PLAYER CARD -->
+  <div class="w-full max-w-5xl glass-card rounded-3xl p-4 sm:p-8 shadow-2xl overflow-hidden my-auto border border-sky-900/30">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+      
+      <!-- ALBUM COVER & CONTROLS COLUMN (LHS) -->
+      <div class="lg:col-span-5 flex flex-col justify-between items-center space-y-5">
+        
+        <!-- Album Art -->
+        <div class="relative w-full max-w-[300px] sm:max-w-[400px] aspect-square rounded-2xl overflow-hidden shadow-2xl group border border-white/10"> <!--Căn chỉnh chiều dài, rộng bức ảnh-->
+          <img id="albumImg" src="./assets/album cover/Miền đất còn lại 2022.jpg" alt="album cover ngot-2016" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-100">
+          <div>
+            <button id="albumPlayHoverBtn">
+              <i class="fa-solid fa-play"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Track Info -->
+        <div class="text-center w-full px-2">
+          <h2 id="nowPlayingTitle" class="text-xl sm:text-2xl font-bold truncate text-white tracking-wide">Ngọt - Vì ai</h2>
+          <p class="text-sm text-slate-400 mt-1">Miền đất còn lại (2022)</p>
+        </div>
+
+        <!-- Player Controls & Progress -->
+        <div class="w-full space-y-3">
+          
+          <!-- THANH KÉO CHUYỂN NHẠC (PROGRESS BAR) -->
+          <div class="progress-container flex flex-col gap-1.5 w-full">
+            <input type="range" id="progressBar" value="0" min="0" max="100" step="0.1" class="w-full">
+            <div class="flex justify-between text-xs text-slate-400 font-mono">
+              <span id="currentTime">00:00</span>
+              <span id="duration">00:00</span>
+            </div>
+          </div>
+
+          <!-- Buttons Container -->
+          <div class="flex items-center justify-center gap-6 pt-2">
+            <button class="btn-step w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95" id="prevBtn" title="Bài trước">
+              <i class="fa-solid fa-backward-step text-lg"></i>
+            </button>
+
+            <button class="main-play-btn w-14 h-14 rounded-full bg-black hover:bg-amber-100 text-red-600 flex items-center justify-center text-xl shadow-lg shadow-black/20 hover:shadow-red-600/30 hover:scale-105 active:scale-95 transition" id="mainPlayBtn" title="Play/Pause">
+              <i class="fa-solid fa-play ml-0.5"></i>
+            </button>
+
+            <button class="btn-step w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95" id="nextBtn" title="Bài tiếp">
+              <i class="fa-solid fa-forward-step text-lg"></i>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- PLAYLIST & LYRICS COLUMN (RHS) -->
+      <div class="lg:col-span-7 flex flex-col space-y-4">
+        
+        <!-- Tabs Header -->
+        <div class="flex border-b border-white/10 pb-2">
+          <button id="tabLyricsBtn" class="px-4 py-1.5 text-sm font-semibold border-b-2 border-black-400 text-sky-400 transition">
+            <i class="fa-solid fa-align-left mr-2"></i>Lời Bài Hát
+          </button>
+          <button id="tabPlaylistBtn" class="px-4 py-1.5 text-sm font-semibold text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-list-ul mr-2"></i>Danh Sách Phát
+          </button>
+        </div>
+
+        <!-- LYRICS CONTAINER (Auto-scrolls vertically) -->
+        <div id="lyricsView" class="relative flex-1 min-h-[340px] max-h-[380px] lg:max-h-[440px] bg-black/25 rounded-2xl p-4 overflow-y-auto border border-white/5 flex flex-col items-center">
+          <div id="lyricsContainer" class="w-full text-center my-auto py-19 space-y-2"> <!--Căn chỉnh chiều cao lời nhạc so với khung gì gì đó (?)-->
+            <!-- Dynamic lyrics rendered here -->
+          </div>
+        </div>
+
+        <!-- PLAYLIST CONTAINER -->
+        <div id="playlistView" class="hidden flex-1 min-h-[340px] max-h-[380px] lg:max-h-[440px] bg-black/25 rounded-2xl p-2 overflow-y-auto border border-white/5">
+          <div class="track-list space-y-1">
+            
+            <!-- track 1 -->
+            <div class="track-item active p-3 rounded-xl hover:bg-white/10 cursor-pointer flex items-center justify-between transition bg-white/10 border-l-4 border-sky-400" data-index="0" data-src="https://native-violet-dtfh2luk.edgeone.dev/">
+              <div class="track-title font-medium text-slate-200 text-sm sm:text-base">1. Mimetals - Đường đi</div>
+              <i class="fa-solid fa-volume-high text-sky-400 text-xs active-icon"></i>
+            </div>
+
+            <!-- track 2 -->
+            <div class="track-item p-3 rounded-xl hover:bg-white/10 cursor-pointer flex items-center justify-between transition" data-index="1" data-src="https://mature-bronze-ugqlooaz.edgeone.dev/">
+              <div class="track-title font-medium text-slate-300 text-sm sm:text-base">2. Mimetals - Nỗi buồn thổi lại</div>
+              <i class="fa-solid fa-volume-high text-sky-400 text-xs opacity-0 active-icon"></i>
+            </div>
+
+            <!-- track 3 -->
+            <div class="track-item p-3 rounded-xl hover:bg-white/10 cursor-pointer flex items-center justify-between transition" data-index="2" data-src="https://developing-amaranth-vfd6gxip.edgeone.dev/">
+              <div class="track-title font-medium text-slate-300 text-sm sm:text-base">3. Mimetals - Cô gái tóc ngắn</div>
+              <i class="fa-solid fa-volume-high text-sky-400 text-xs opacity-0 active-icon"></i>
+            </div>
+
+            <!-- track 4 -->
+            <div class="track-item p-3 rounded-xl hover:bg-white/10 cursor-pointer flex items-center justify-between transition" data-index="3" data-src="https://successive-violet-7y27lqby.edgeone.dev/">
+              <div class="track-title font-medium text-slate-300 text-sm sm:text-base">4. Mimetals - Miền đất còn lại</div>
+              <i class="fa-solid fa-volume-high text-sky-400 text-xs opacity-0 active-icon"></i>
+            </div>
+
+            <!-- track 5 -->
+            <div class="track-item p-3 rounded-xl hover:bg-white/10 cursor-pointer flex items-center justify-between transition" data-index="4" data-src="https://manual-yellow-cgxsh5nn.edgeone.dev/">
+              <div class="track-title font-medium text-slate-300 text-sm sm:text-base">5. Mimetals - Nếu mùa hè còn mãi</div>
+              <i class="fa-solid fa-volume-high text-sky-400 text-xs opacity-0 active-icon"></i>
+            </div>
+
+            <!-- track 6 -->
+            <div class="track-item p-3 rounded-xl hover:bg-white/10 cursor-pointer flex items-center justify-between transition" data-index="5" data-src="https://selfish-gold-bbdcwqbh.edgeone.dev/">
+              <div class="track-title font-medium text-slate-300 text-sm sm:text-base">6. Mimetals - Đám cưới trong mây</div>
+              <i class="fa-solid fa-volume-high text-sky-400 text-xs opacity-0 active-icon"></i>
+            </div>
+
+            <!-- track 7 -->
+            <div class="track-item p-3 rounded-xl hover:bg-white/10 cursor-pointer flex items-center justify-between transition" data-index="6" data-src="https://entitled-tomato-wgcxffer.edgeone.dev/">
+              <div class="track-title font-medium text-slate-300 text-sm sm:text-base">7. Mimetals - Chiếc ghế của ông</div>
+              <i class="fa-solid fa-volume-high text-sky-400 text-xs opacity-0 active-icon"></i>
+            </div>
+
+            <!-- track 8 -->
+            <div class="track-item p-3 rounded-xl hover:bg-white/10 cursor-pointer flex items-center justify-between transition" data-index="7" data-src="https://informal-green-xcla3a7e.edgeone.dev/">
+              <div class="track-title font-medium text-slate-300 text-sm sm:text-base">8. Mimetals - Cây đàn và tôi</div>
+              <i class="fa-solid fa-volume-high text-sky-400 text-xs opacity-0 active-icon"></i>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- JS -->
+  <script src="./assets/script.js"></script>
+</body>
+</html>
